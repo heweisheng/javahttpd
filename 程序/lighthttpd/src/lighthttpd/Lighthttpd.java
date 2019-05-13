@@ -45,10 +45,10 @@ public class Lighthttpd implements Runnable {
         String msg = new String("");
         InputStream in = cli.getInputStream();
         OutputStream out = cli.getOutputStream();
-        while (true) {
-            byte get[] = new byte[4096];
-            in.read(get);
-            msg = msg + new String(get,"ISO-8859-1");//如果不实用ISO格式数据会失真，在文件传输是致命的
+        byte get[] = new byte[4096];
+        while (true) {        
+            int len=in.read(get);
+            msg = msg + new String(get,0,len,"ISO-8859-1");//如果不实用ISO格式数据会失真，在文件传输是致命的,另外还有缓冲区覆盖问题，主要是byte不初始化
             if (msg.indexOf("\r\n\r\n") == 0) {
                 continue;
             } else {
@@ -82,7 +82,7 @@ public class Lighthttpd implements Runnable {
             }
         } else if (report.geturl().contains("/cgi-bin/")) {
 
-            Dynamic dy = new Dynamic(report, msg.substring(end + 1), out, in,save);
+            Dynamic dy = new Dynamic(report, msg.substring(end), out, in,save);
             dy.contorl();
         }
         //else

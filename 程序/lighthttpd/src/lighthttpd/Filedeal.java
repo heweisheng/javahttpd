@@ -21,11 +21,11 @@ public class Filedeal {
         }
         return 0;
     }
-     public void Savefilebyte(byte[] msg,FileOutputStream fs)
+     public void Savefilebyte(byte[] msg,int len,FileOutputStream fs)
     {
         //System.out.print(msg);
         try {                      
-            fs.write(msg);
+            fs.write(msg,0,len);
             System.out.print("1");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Filedeal.class.getName()).log(Level.SEVERE, null, ex);
