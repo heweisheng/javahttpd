@@ -54,7 +54,7 @@ public class Dynamic {
                 flag = true;
                 FileOutputStream out = null;
                 try {
-                    File file = new File(save + filename.substring(1, filename.length() - 1));
+                    File file = new File(save + new String(filename.substring(1, filename.length() - 1).getBytes("ISO-8859-1"),"UTF-8"));
                     out = new FileOutputStream(file);
                     fs.Savefile(postbh[i].getplain(), out);
                 } catch (FileNotFoundException ex) {
