@@ -55,20 +55,13 @@ public class Lighthttpd implements Runnable {
                 break;
             }
         }
-        //System.out.print(msg);
         //建议一个一个解析，因为如果每个字段都去找报文效率太低，不如逐个解析速度快
-        /*String method = msg.substring(0, 4);
-        String etag=msg.substring(msg.indexOf("If-None-Match: ")+(new String("If-None-Match: ")).length());
-        etag=etag.substring(0, etag.indexOf("\"",2)+1);*/
         GetHeader report = new GetHeader();
         int end = msg.indexOf("\r\n\r\n") + 4;
         report.Readheader(msg.substring(0, end));
-        String method = report.getfunction();
-        //System.out.println(etag);
-        //System.out.println(method);       
+        String method = report.getfunction(); 
         if (method.equals("GET") && !report.geturl().contains("/cgi-bin/")) {
-            String URL = fd.getURLDecoderString(report.geturl());       //URL转换
-            //System.out.println(local + URL);          
+            String URL = fd.getURLDecoderString(report.geturl());       //URL转换       
             File file = new File(local + URL);
             String etag = report.getetag();
             if (fd.judegfilexist(file)) {
@@ -81,19 +74,15 @@ public class Lighthttpd implements Runnable {
                 }
             }
         } else if (report.geturl().contains("/cgi-bin/")) {
-
             Dynamic dy = new Dynamic(report, msg.substring(end), out, in,save);
             dy.contorl();
         }
-        //else
 
     }
 
     public boolean Init(String local, String save) {
         this.local = local+"\\";
         this.save = save+"\\";
-        //System.out.println(this.local);
-        //System.out.println(this.save);
         return !(this.local.equals("")|| this.save.equals(""));
     }
 

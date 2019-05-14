@@ -71,7 +71,6 @@ public class PostMes {
                 end++;
             }
             value = mes.substring(start, end);
-            //System.out.println(key+": "+value);
             if (key.equals("Content-Disposition")) {
                 this.contentd = value+'\r';
                 this.Postkv(this.contentd);
@@ -80,8 +79,7 @@ public class PostMes {
             }
             if (mes.charAt(end + 2) == '\r') {
                 break;
-            }
-            //this.value.put(key, value);           
+            }         
         }
         this.plain=mes.substring(end+4);
     }

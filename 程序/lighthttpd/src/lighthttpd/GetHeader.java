@@ -60,7 +60,6 @@ public class GetHeader {            //由于是微形的web服务器，所以只
             //key
             key = request.substring(head, i);
             head += key.length() + 2;
-            //System.out.println(key);
             //value
             while (i<length&&request.charAt(i) != '\r') i++;               
             value = request.substring(head, i);
@@ -70,7 +69,6 @@ public class GetHeader {            //由于是微形的web服务器，所以只
                     {
                             case 0:
                                 this.clietag=new String(value); 
-                                //System.out.println(clietag);
                                 break;
                             case 1:
                                 this.useragent=new String(value);
@@ -86,7 +84,6 @@ public class GetHeader {            //由于是微形的web服务器，所以只
                             default:
                                 break;
                     }
-                    //System.out.println(key+": "+value);
                     break;                    
                 }
             }
@@ -94,7 +91,6 @@ public class GetHeader {            //由于是微形的web服务器，所以只
             if(request.charAt(head)=='\r')
                 break;
         }
-        //System.out.println("test");
 
     }
 

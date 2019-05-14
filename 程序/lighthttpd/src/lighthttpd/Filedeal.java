@@ -23,7 +23,6 @@ public class Filedeal {
     }
      public void Savefilebyte(byte[] msg,int len,FileOutputStream fs)
     {
-        //System.out.print(msg);
         try {                      
             fs.write(msg,0,len);
             System.out.print("1");
@@ -36,7 +35,6 @@ public class Filedeal {
     }
     public void Savefile(String msg,FileOutputStream fs)
     {
-        //System.out.print(msg);
         try {           
             byte []stb=msg.getBytes("ISO-8859-1");
             fs.write(stb);
@@ -57,9 +55,7 @@ public class Filedeal {
                 int all = fs.available();             //判断文件长度
                 while ((all = all - fs.read(buffer)) > 0) {
                     out.write(buffer);          //多次发送
-                    //System.out.printf(new String(buffer));
                 }
-                //System.out.printf(new String(buffer));
                 out.write(buffer);          //最后一次发送
                 fs.close();             //一定要记得关闭
             } catch (IOException ex) {

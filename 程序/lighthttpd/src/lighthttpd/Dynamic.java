@@ -9,15 +9,13 @@ import java.util.logging.Logger;
  * @author heweisheng software enginner
  */
 public class Dynamic {
-
-    //BASE64Decoder decoder = new BASE64Decoder();
     private GetHeader report = null;
     private String msg = null;
     private OutputStream out = null;
     private InputStream in = null;
-    private Filedeal fs = new Filedeal();
-    private Getstatic notfound = new Getstatic();
-    private String save;
+    private final Filedeal fs = new Filedeal();
+    private final Getstatic notfound = new Getstatic();
+    private final String save;
 
     public Dynamic(GetHeader header, String msg, OutputStream out, InputStream in, String save) {
         this.report = header;
@@ -28,18 +26,19 @@ public class Dynamic {
     }
 
     public boolean contorl() {
-        if (report.getfunction().equals("GET")) {
-            return getDynamic();
-        } else if (report.getfunction().equals("POST")) {
-            return postDynamic(report.geturl());
-            //return tmpsave();
-        } else {
-            try {
-                out.close();
-            } catch (IOException ex) {
-                return false;
-            }
-            return true;
+        switch (report.getfunction()) {
+            case "GET":
+                return getDynamic();
+            case "POST":
+                return postDynamic(report.geturl());
+                //return tmpsave();
+            default:
+                try {
+                    out.close();
+                } catch (IOException ex) {
+                    return false;
+                }
+                return true;
         }
     }
 
@@ -58,14 +57,14 @@ public class Dynamic {
                     out = new FileOutputStream(file);
                     fs.Savefile(postbh[i].getplain(), out);
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(Dynamic.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
                 } catch (Exception ex) {
-                    Logger.getLogger(Dynamic.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
                 } finally {
                     try {
                         out.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(Dynamic.class.getName()).log(Level.SEVERE, null, ex);
+                        return false;
                     }
                 }
             }
@@ -87,15 +86,11 @@ public class Dynamic {
             for (int i = 0; i < 10; i++) {
                 postbh[i] = new PostMes();//限定接受最多10个参数
             }           
-            //System.out.println("--"+report.getboundary());
-            //System.out.println(msg);
             int blen = "--".length() + report.getboundary().length();//谷歌的post报文正文不同先找到正文部分是否有第一个边界
             while (true) {
                 flag = msg.indexOf("--" + report.getboundary());
-                //System.out.println(flag);
                 if (flag != -1) {
                     msg = new String(msg.substring(flag + blen+2));
-                    //System.out.println(msg);
                     break;
                 } else {
                     int len = in.read(get);
@@ -104,8 +99,7 @@ public class Dynamic {
             }
             String boundary = "";
             int i = 0;
-            while (i < 10) {
-                //System.out.println(msg);                                              
+            while (i < 10) {                                             
                 start = end;
                 end = msg.indexOf("--" + report.getboundary());
                 if (end != -1 && msg.charAt(end + blen + 1) != '-') {
@@ -121,24 +115,18 @@ public class Dynamic {
                     break;
                 } else {
                     boundary += msg;
-                    //fd.Savefile(boundary,fs);
                     msg = "";
                     end = 0;
                 }
                 int len = in.read(get);
                 msg += new String(get, 0, len, "ISO-8859-1");
-                //System.out.print(new String(msg));
             }
-            //System.out.println(msg);
             postbh[i].PostRead(boundary + msg.substring(0, msg.indexOf("--" + report.getboundary() + "--")));
-            //postbh[i].print();
             System.out.println("test");
-            //System.out.print(postbh[i].getplain());
             if (URL.equals("/cgi-bin/uploadfile"))//找到对应的cgi子过程
             {
                 return cgi_bin_demo(postbh);
             }
-            //System.out.println("test");
         } catch (IOException ex) {
             return false;
         }
