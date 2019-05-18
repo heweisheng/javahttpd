@@ -51,7 +51,7 @@ public class Dynamic {
         }
     }
 
-    public boolean cgi_bin_demo(PostMes postbh[]) {
+    public boolean cgi_bin_demo(PostMes postbh[]) {//临时文件没有清除哦，还没有写表单的处理，如果要处理表单，读取后应该删除内容。
         //System.out.print("testdemo");
         boolean flag = false;
         String filename = null;
