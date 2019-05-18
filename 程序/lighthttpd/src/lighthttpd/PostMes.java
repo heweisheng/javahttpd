@@ -17,6 +17,15 @@ public class PostMes {
     private String conttype=null;//Content-Type;
     public HashMap<String, String> value = new HashMap();//key-value
     private String plain;
+    private String file;
+    public void setfile(String file)
+    {
+        this.file=file;
+    }
+    public String getfile(String file)
+    {
+        return this.file;
+    }
     public String getconttype()
     {
         return this.conttype;
@@ -55,7 +64,7 @@ public class PostMes {
         this.value.put(key, value);
     }
 
-    public void PostRead(String mes) {
+    public int PostRead(String mes,String filename) {
         String key = "";
         String value = "";
         String plain = "";
@@ -81,7 +90,9 @@ public class PostMes {
                 break;
             }         
         }
-        this.plain=mes.substring(end+4);
+        this.file=filename;
+        return end+4;
+        //this.plain=mes.substring(end+4);
     }
 
 }

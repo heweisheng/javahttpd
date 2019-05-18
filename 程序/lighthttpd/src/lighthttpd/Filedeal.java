@@ -38,7 +38,7 @@ public class Filedeal {
         try {           
             byte []stb=msg.getBytes("ISO-8859-1");
             fs.write(stb);
-            System.out.print("1");
+            //System.out.print("1");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Filedeal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
