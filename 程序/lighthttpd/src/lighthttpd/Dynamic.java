@@ -181,11 +181,11 @@ public class Dynamic {
                     msg += new String(get, 0, len, "ISO-8859-1");
                 }
             }
-            {
+            /*{
                 end = msg.indexOf("--" + report.getboundary());
                 if (end != -1 && msg.charAt(end + blen + 1) != '-') {
                 }
-            }
+            }*/
             int i = 0;
             boolean flags = true;
             while (i < 10) {
@@ -204,6 +204,10 @@ public class Dynamic {
                     String save = msg.substring(start, end);
                     fs.Savefile(save, fo);
                     msg = msg.substring(end + blen);
+                    if (msg.length() < 100) {
+                        int len = in.read(get);
+                        msg += new String(get, 0, len, "ISO-8859-1");
+                    }
                     i++;
                     end = 0;
                     flags = true;
