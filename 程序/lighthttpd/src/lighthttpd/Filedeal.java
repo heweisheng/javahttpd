@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,22 +22,22 @@ public class Filedeal {
         }
         return 0;
     }
-     public void Savefilebyte(byte[] msg,int len,FileOutputStream fs)
-    {
-        try {                      
-            fs.write(msg,0,len);
+
+    public void Savefilebyte(byte[] msg, int len, FileOutputStream fs) {
+        try {
+            fs.write(msg, 0, len);
             System.out.print("1");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Filedeal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Filedeal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    public void Savefile(String msg,FileOutputStream fs)
-    {
-        try {           
-            byte []stb=msg.getBytes("ISO-8859-1");
+
+    public void Savefile(String msg, FileOutputStream fs) {
+        try {
+            byte[] stb = msg.getBytes("ISO-8859-1");
             fs.write(stb);
             //System.out.print("1");
         } catch (FileNotFoundException ex) {
@@ -44,8 +45,9 @@ public class Filedeal {
         } catch (IOException ex) {
             Logger.getLogger(Filedeal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
+
     public void Sendfile(OutputStream out, File file)//文件发送
     {
         try {
@@ -73,6 +75,39 @@ public class Filedeal {
         } else {
             return false;
         }
+    }
+
+    public ArrayList<File> getFiles(String path) throws Exception {
+        //目标集合fileList   
+        ArrayList<File> fileList = new ArrayList<File>();
+        File file = new File(path);
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File fileIndex : files) {
+                //如果这个文件是目录，则进行递归搜索              
+                if (fileIndex.isDirectory()) {
+                    getFiles(fileIndex.getPath());
+                } else {
+                    //如果文件是普通文件，则将文件句柄放入集合中                  
+                    fileList.add(fileIndex);
+                }
+            }
+        }
+        return fileList;
+    }
+
+    public ArrayList<String> getfilelist(String path) {
+        ArrayList<String> filelist=new ArrayList<String>();
+        try {
+            ArrayList<File> list = getFiles(path);
+            for (int i = 0; i < list.size(); i++) {
+            String curpath = list.get(i).getPath();//获取文件路径
+            filelist.add(curpath.substring(curpath.lastIndexOf("\\") + 1));//将文件名加入数组
+        }
+        } catch (Exception ex) {
+            return null;
+        }
+        return filelist;
     }
     private final static String ENCODE = "UTF-8";           //URL解析，把UTF-8转回汉字
 

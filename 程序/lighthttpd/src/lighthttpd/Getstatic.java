@@ -29,32 +29,32 @@ public class Getstatic {//静态的GET方法
     public boolean contorl(String URL, OutputStream out, File file, String etag) { //正确页面产生控制器
         String ETAG = null;
         ETAG = fileetag.get(URL);
-        if (ETAG == null) //etag相同，发送304
+        if (ETAG == null) //服务器散列表不存在，先生成etag，再返回页面
         {
             String etagnew = new String(getRandomCharacter('a', 'z'));
             fileetag.put(URL, etagnew);
             return getfile200(URL, out, file, etagnew);
-        } else if (etag == null || !ETAG.equals(etag)) {
+        } else if (etag == null || !ETAG.equals(etag)) {//etag为空或者etag不相同产生新页面。
             return getfile200(URL, out, file, ETAG);
-        } else {
+        } else {//etag相同，发送304
             return getfile304(URL, out, ETAG);
         }
 
     }
 
-    public boolean getfile200(String URL, OutputStream out, File file, String etag) {
+    public boolean getfile200(String URL, OutputStream out, File file, String etag) {//200 生成页面
         try {
             ResponedHeader headspond = new ResponedHeader();
-            headspond.setstate(0);
-            headspond.setcontent_type(URL);
-            headspond.setetag(etag);
-            headspond.setcontent(fd.getFileSize1(file));
+            headspond.setstate(0);//设置状态码200
+            headspond.setcontent_type(URL);//设置rfc文件类型
+            headspond.setetag(etag);//设置etag
+            headspond.setcontent(fd.getFileSize1(file));//获取文件大小
             String rethead = headspond.HeadtoString();
-            rethead += "\r\n";
-            byte[] tobyte = rethead.getBytes();
-            out.write(tobyte);
-            fd.Sendfile(out, file);
-            out.close();
+            rethead += "\r\n";//报文结尾
+            byte[] tobyte = rethead.getBytes();//生成报文头
+            out.write(tobyte);//先写报文头
+            fd.Sendfile(out, file);//发送文件
+            out.close();//关闭流
         } catch (IOException ex) {
             return false;
         }
@@ -68,7 +68,7 @@ public class Getstatic {//静态的GET方法
             headspond.setcontent_type(URL);
             headspond.setetag(etag);
             String rethead = headspond.HeadtoString();
-            rethead += "\r\n";
+            rethead += "\r\n";//同200，但是只要生成保文头就够了
             byte[] tobyte = rethead.getBytes();
             out.write(tobyte);
             out.close();
@@ -78,7 +78,7 @@ public class Getstatic {//静态的GET方法
         return true;
     }
 
-    public boolean getfile404(OutputStream out, String etag) {       //错误页面
+    public boolean getfile404(OutputStream out, String etag) {       //错误页面，懒，直接写在代码里。
         String ETAG = fileetag.get("./404NOTFOUND.html\0");
         if (ETAG == null) {
             ETAG = new String(getRandomCharacter('a', 'z'));

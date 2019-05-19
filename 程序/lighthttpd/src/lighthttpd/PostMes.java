@@ -15,8 +15,8 @@ public class PostMes {
 
     private String contentd=null;//Content-Disposition;
     private String conttype=null;//Content-Type;
-    public HashMap<String, String> value = new HashMap();//key-value
-    private String plain;
+    public HashMap<String, String> value = new HashMap();//key-value，懒，如果考虑效率可以不使用。
+    private String plain;//废弃String存放，改用文件
     private String file;
     public void setfile(String file)
     {
@@ -34,14 +34,14 @@ public class PostMes {
     {
         return this.plain;
     }
-    public void print()
+    public void print()//测试用，目前只知道能兼容火狐，ie，谷歌
     {
         for(Map.Entry<String, String> entry: value.entrySet())
         {
          System.out.println("Key: "+ entry.getKey()+ " Value: "+entry.getValue());
         }
     }
-    public void Postkv(String mes) {
+    public void Postkv(String mes) {//跟报文头一样的处理。
         int start = 0;
         int end = 0;
         while (mes.charAt(end) != ';') {
@@ -54,14 +54,14 @@ public class PostMes {
             while(mes.charAt(end)!='=')end++;
             key=mes.substring(start, end);
             start=end=end+1;
-            while(mes.charAt(end)!=';'&&mes.charAt(end)!='\r')end++;
+            while(mes.charAt(end)!=';'&&mes.charAt(end)!='\r')end++;//可能不止一个键值对
             value=mes.substring(start, end);
             if(mes.charAt(end)=='\r')
                 break;
             start=end=end+2;
             this.value.put(key, value);
         }
-        this.value.put(key, value);
+        this.value.put(key, value);//存储到键值对
     }
 
     public int PostRead(String mes,String filename) {
@@ -91,7 +91,7 @@ public class PostMes {
             }         
         }
         this.file=filename;
-        return end+4;
+        return end+4;//正文部分起始位置\r\n\r\n的问题。
         //this.plain=mes.substring(end+4);
     }
 
