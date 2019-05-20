@@ -2,8 +2,6 @@ package lighthttpd;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 //import sun.misc.BASE64Decoder;
 
 /**

@@ -47,8 +47,7 @@ public class GetHeader {            //由于是微形的web服务器，所以只
             end++;
         }
         this.httpvs = request.substring(head, end);
-        head = end = end + 2;//+2是因为http报文是/r/n为一个头结束
-        
+        head = end = end + 2;//+2是因为http报文是/r/n为一个头结束      
         String dict[] = {"If-None-Match", "User-Agent", "Content-Length","Content-Type"};       
         int length=request.length();
         for (int i = head; i < length; i++) {
@@ -91,7 +90,6 @@ public class GetHeader {            //由于是微形的web服务器，所以只
             if(request.charAt(head)=='\r')
                 break;
         }
-
     }
 
     public void setfuncion(String function) {

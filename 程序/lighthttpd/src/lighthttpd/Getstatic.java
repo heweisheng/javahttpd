@@ -78,7 +78,7 @@ public class Getstatic {//静态的GET方法
         return true;
     }
 
-    public boolean getfile404(OutputStream out, String etag) {       //错误页面，懒，直接写在代码里。
+    public boolean getfile404(OutputStream out, String etag) {       //错误页面，懒，直接写在代码里，其实可以直接返回404状态，但是很多服务器都是自定义404页面。
         String ETAG = fileetag.get("./404NOTFOUND.html\0");
         if (ETAG == null) {
             ETAG = new String(getRandomCharacter('a', 'z'));
