@@ -14,3 +14,6 @@
 由于原先的动态get没做，所以添加了上去，但是还没做get传参。
 # 2019.5.20单身节快乐
 终版，删掉了一些不需要的东西，url解析跟post非文件非boundary没做实在是懒，我本来只想做个作业系统，所以就这样了叭，如果有兴趣可以在上面添加
+![运行](https://github.com/heweisheng/javahttpd/blob/master/%E5%B1%95%E7%A4%BA/1.png)
+![运行](https://github.com/heweisheng/javahttpd/blob/master/%E5%B1%95%E7%A4%BA/2.png)
+![运行](https://github.com/heweisheng/javahttpd/blob/master/%E5%B1%95%E7%A4%BA/3.png)
